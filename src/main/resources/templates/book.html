@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Yaksan</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        .menu-container {
+            max-width: 400px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Login container -->
+    <div class="login-container" th:if="${not #authorization.expression('isAuthenticated()')}">
+        <h2 class="mb-4">Login</h2>
+        <div th:if="${error}" class="form-group mr-2">
+            <p style="color: red;">Login failed, Please try again.</p>
+        </div>
+        <div th:if="${logout}" class="form-group mr-2">
+            <p style="color: red;">You have been logged out successfully.</p>
+        </div>
+        <form th:action="@{/loginProcess}" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+    </div>
+
+    <!-- Menu container -->
+    <div class="menu-container" th:if="${#authorization.expression('isAuthenticated()')}">
+        <!-- Display username and permissions of currently logged-in user -->
+        <p th:text="'Welcome, ' + ${#authentication.principal.username} + ' (' + (${#authorization.expression('hasAuthority(''ROLE_USER'')')} ? 'User' : '') + (${#authorization.expression('hasAuthority(''ROLE_MANAGER'')')} ? 'Manager' : '') + (${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')} ? 'Admin' : '') + ')!'"></p>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" th:href="@{/user/home}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/user/profile}">Profile</a></li>
+            <!-- Display additional menu items for managers -->
+            <li class="nav-item" th:if="${#authorization.expression('hasAuthority(''ROLE_MANAGER'')')}">
+                <a class="nav-link" th:href="@{/manager/manage-reviews}">Manage Reviews</a>
+                <a class="nav-link" th:href="@{/manager/manage-books}">Manage Books</a>
+            </li>
+            <!-- Display additional menu items for admins -->
+            <li class="nav-item" th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                <a class="nav-link" th:href="@{/admin/customers}">Customer Lists</a>
+                <a class="nav-link" th:href="@{/admin/system-settings}">System Settings</a>
+            </li>
+            <!-- Logout button -->
+            <li class="nav-item">
+                <a class="nav-link text-danger" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

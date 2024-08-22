@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Customer List</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Username</th>
+            <th>Permissions</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.id}"></td>
+            <td th:text="${customer.username}"></td>
+            <td th:text="${customer.roles}"></td>
+            <td>
+                <!-- Form to update customer permissions -->
+                <form th:action="@{/admin/customers/update-permissions}" method="post">
+                    <input type="hidden" name="customerId" th:value="${customer.id}">
+                    <select name="newPermissions">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_MANAGER">Manager</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Permissions</button>
+                </form>
+                <!-- Form to add permissions -->
+                <form th:action="@{/admin/customers/add-permissions}" method="post">
+                    <input type="hidden" name="customerId" th:value="${customer.id}">
+                    <select name="newPermissions">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_MANAGER">Manager</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                    <button type="submit" class="btn btn-success">Add Permissions</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
