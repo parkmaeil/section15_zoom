@@ -28,9 +28,9 @@
                 <form th:action="@{/admin/customers/update-permissions}" method="post">
                     <input type="hidden" name="customerId" th:value="${customer.id}">
                     <select name="newPermissions">
-                        <option value="ROLE_USER">User</option>
-                        <option value="ROLE_MANAGER">Manager</option>
-                        <option value="ROLE_ADMIN">Admin</option>
+                        <option value="USER">User</option>
+                        <option value="MANAGER">Manager</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
                     <button type="submit" class="btn btn-primary">Update Permissions</button>
                 </form>
@@ -38,9 +38,9 @@
                 <form th:action="@{/admin/customers/add-permissions}" method="post">
                     <input type="hidden" name="customerId" th:value="${customer.id}">
                     <select name="newPermissions">
-                        <option value="ROLE_USER">User</option>
-                        <option value="ROLE_MANAGER">Manager</option>
-                        <option value="ROLE_ADMIN">Admin</option>
+                        <option value="USER">User</option>
+                        <option value="MANAGER">Manager</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
                     <button type="submit" class="btn btn-success">Add Permissions</button>
                 </form>

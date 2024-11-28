@@ -28,7 +28,7 @@ public class MemberService {
         customer.setPassword(encodePassword);
         // 2. 권한부여(USER, MANAGER, ADMIN) : member_roles : USER(1)
         Set<Role> roles=new HashSet<>();
-        Role userRole=roleService.findByName("USER");
+        Role userRole=roleService.findByName("ADMIN");
         roles.add(userRole);
         customer.setRoles(roles);
         return memberRepository.save(customer); // insert SQL~
